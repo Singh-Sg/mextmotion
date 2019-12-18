@@ -1,12 +1,20 @@
-from rest_framework import status
+from nextmotion import settings
+from rest_framework import pagination, status
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from .serializer import GetAllInvitationSerializer, CreateInvitationSerializer, UpdateInvitationSerializer
-from .service import GetAllInvitationsService, DeleteInvitationsService, CreateInvitationsService, UpdateInvitationsService
-from nextmotion import settings
-from rest_framework import pagination
 from .models import Invitation
+from .serializer import (
+    CreateInvitationSerializer,
+    GetAllInvitationSerializer,
+    UpdateInvitationSerializer,
+)
+from .service import (
+    CreateInvitationsService,
+    DeleteInvitationsService,
+    GetAllInvitationsService,
+    UpdateInvitationsService,
+)
 
 
 class InvitationsViews(APIView):
@@ -21,7 +29,6 @@ class InvitationsViews(APIView):
         serializer = GetAllInvitationSerializer(invitaions, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
-
     @classmethod
     def post(cls, request):
         """
@@ -30,23 +37,12 @@ class InvitationsViews(APIView):
         serializer.is_valid(raise_exception=True)
         serial_data = serializer.validated_data
         try:
-            invitaion = CreateInvitationsService.execute(
-                {
-                    "serial_data": serial_data
-                }
-            )
+            invitaion = CreateInvitationsService.execute({"serial_data": serial_data})
             serializer = GetAllInvitationSerializer(invitaion)
-            return Response(
-                {"data": serializer.data},
-                status.HTTP_201_CREATED,
-            )
+            return Response({"data": serializer.data}, status.HTTP_201_CREATED,)
         except User.DoesNotExist:
             return Response(
-                {
-                    'Error': 'Invalid creator id{}'.format(
-                        'invitations_id'
-                    )
-                },
+                {"Error": "Invalid creator id{}".format("invitations_id")},
                 status.HTTP_404_NOT_FOUND,
             )
 
@@ -68,18 +64,11 @@ class InvitationsViews(APIView):
             )
 
             serializer = GetAllInvitationSerializer(invitaion)
-            return Response(
-                {"data": serializer.data},
-                status.HTTP_200_OK,
-            )
+            return Response({"data": serializer.data}, status.HTTP_200_OK,)
 
         except Invitation.DoesNotExist:
             return Response(
-                {
-                    'Error': 'Invalid Invitation id{}'.format(
-                        invitations_id
-                    )
-                },
+                {"Error": "Invalid Invitation id{}".format(invitations_id)},
                 status.HTTP_404_NOT_FOUND,
             )
 
@@ -89,17 +78,11 @@ class InvitationsViews(APIView):
         """
         try:
             DeleteInvitationsService.execute(
-                {
-                    "invitations_id": invitations_id,
-                }
+                {"invitations_id": invitations_id,}
             )
             return Response({}, status.HTTP_200_OK)
         except Invitation.DoesNotExist:
             return Response(
-                {
-                    'Error': 'Invalid Invitation id{}'.format(
-                        invitations_id
-                    )
-                },
+                {"Error": "Invalid Invitation id{}".format(invitations_id)},
                 status.HTTP_404_NOT_FOUND,
             )

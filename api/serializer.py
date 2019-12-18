@@ -15,23 +15,32 @@ class GetAllInvitationSerializer(serializers.ModelSerializer):
     'creatorEmail': <str>, 
     'creatorFullname': <str> Example: John Oliver,
     """
+
     id = serializers.CharField()
-    createdTime = serializers.SerializerMethodField('iso_8601_format')
+    createdTime = serializers.SerializerMethodField("iso_8601_format")
     seconds = serializers.SerializerMethodField("get_seconds")
     email = serializers.CharField()
     used = serializers.BooleanField()
-    creatorEmail = serializers.ReadOnlyField(source='creator.email', read_only=True)
-    creatorFullname = serializers.SerializerMethodField('get_full_name')
+    creatorEmail = serializers.ReadOnlyField(source="creator.email", read_only=True)
+    creatorFullname = serializers.SerializerMethodField("get_full_name")
 
     class Meta:
         model = Invitation
-        fields = ['id', 'createdTime', 'seconds', 'email', 'used', 'creatorEmail', 'creatorFullname']
+        fields = [
+            "id",
+            "createdTime",
+            "seconds",
+            "email",
+            "used",
+            "creatorEmail",
+            "creatorFullname",
+        ]
 
     def get_full_name(self, obj):
-        return '{} {}'.format(obj.creator.first_name, obj.creator.last_name) 
+        return "{} {}".format(obj.creator.first_name, obj.creator.last_name)
 
     def get_seconds(self, obj):
-        return '{}'.format(str(obj.created_time.time())[6:8])
+        return "{}".format(str(obj.created_time.time())[6:8])
 
     def iso_8601_format(self, obj):
         return dateutil.parser.parse(str(obj.created_time))
@@ -40,21 +49,22 @@ class GetAllInvitationSerializer(serializers.ModelSerializer):
 class CreateInvitationSerializer(serializers.ModelSerializer):
     """
     """
+
     email = serializers.EmailField()
     creator = serializers.IntegerField()
 
     class Meta:
         model = Invitation
-        fields = ['email', 'creator']
+        fields = ["email", "creator"]
 
 
 class UpdateInvitationSerializer(serializers.ModelSerializer):
     """
     """
+
     email = serializers.EmailField(required=False)
     used = serializers.NullBooleanField(required=False)
 
     class Meta:
         model = Invitation
-        fields = ['email', 'used']
-
+        fields = ["email", "used"]

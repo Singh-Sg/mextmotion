@@ -17,13 +17,30 @@ class Migration(migrations.Migration):
 
     operations = [
         migrations.CreateModel(
-            name='Invitation',
+            name="Invitation",
             fields=[
-                ('id', models.UUIDField(default=uuid.uuid4, primary_key=True, serialize=False)),
-                ('created_time', models.DateTimeField(db_index=True, default=datetime.datetime.now)),
-                ('email', models.EmailField(max_length=254)),
-                ('used', models.BooleanField(default=False)),
-                ('creator', models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE, related_name='created_invitations', to=settings.AUTH_USER_MODEL)),
+                (
+                    "id",
+                    models.UUIDField(
+                        default=uuid.uuid4, primary_key=True, serialize=False
+                    ),
+                ),
+                (
+                    "created_time",
+                    models.DateTimeField(db_index=True, default=datetime.datetime.now),
+                ),
+                ("email", models.EmailField(max_length=254)),
+                ("used", models.BooleanField(default=False)),
+                (
+                    "creator",
+                    models.ForeignKey(
+                        blank=True,
+                        null=True,
+                        on_delete=django.db.models.deletion.CASCADE,
+                        related_name="created_invitations",
+                        to=settings.AUTH_USER_MODEL,
+                    ),
+                ),
             ],
         ),
     ]

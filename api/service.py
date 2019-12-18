@@ -1,6 +1,6 @@
 from datetime import datetime
-from service_objects.services import Service
 from django.contrib.auth.models import User
+from service_objects.services import Service
 
 from .models import Invitation
 
@@ -27,8 +27,10 @@ class CreateInvitationsService(Service):
         """
         :return:invitation
         """
-        creator = User.objects.get(id=self.data.get('serial_data').get('creator'))
-        invitation = Invitation.objects.create(email=self.data.get('serial_data').get('email'), creator=creator)
+        creator = User.objects.get(id=self.data.get("serial_data").get("creator"))
+        invitation = Invitation.objects.create(
+            email=self.data.get("serial_data").get("email"), creator=creator
+        )
         return invitation
 
 
@@ -41,13 +43,13 @@ class UpdateInvitationsService(Service):
         """
         :return:Update invitation
         """
-        invitation = Invitation.objects.get(id=self.data.get('invitations_id'))
-        email = self.data.get('email')
+        invitation = Invitation.objects.get(id=self.data.get("invitations_id"))
+        email = self.data.get("email")
         if email:
-            invitation.email = self.data.get('email')
-        used = self.data.get('used')
+            invitation.email = self.data.get("email")
+        used = self.data.get("used")
         if used:
-            invitation.used = self.data.get('used')
+            invitation.used = self.data.get("used")
         invitation.save()
         return invitation
 
@@ -61,5 +63,5 @@ class DeleteInvitationsService(Service):
         """
         :return:None
         """
-        invitations = Invitation.objects.get(id=self.data.get('invitations_id'))
+        invitations = Invitation.objects.get(id=self.data.get("invitations_id"))
         invitations.delete()

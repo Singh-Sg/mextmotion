@@ -1,6 +1,6 @@
-from django.db import models
 import uuid
 from datetime import datetime
+from django.db import models
 from nextmotion import settings
 
 
@@ -10,5 +10,9 @@ class Invitation(models.Model):
     email = models.EmailField()
     used = models.BooleanField(default=False)
     creator = models.ForeignKey(
-        settings.AUTH_USER_MODEL, related_name='created_invitations',
-        on_delete=models.CASCADE, null=True, blank=True)
+        settings.AUTH_USER_MODEL,
+        related_name="created_invitations",
+        on_delete=models.CASCADE,
+        null=True,
+        blank=True,
+    )
