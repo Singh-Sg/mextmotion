@@ -1,9 +1,9 @@
+from django.contrib.auth.models import User
 from django.core import paginator
-from rest_framework.settings import api_settings
-
 from nextmotion import settings
 from rest_framework import pagination, status
 from rest_framework.response import Response
+from rest_framework.settings import api_settings
 from rest_framework.views import APIView
 
 from .models import Invitation
@@ -31,10 +31,9 @@ class InvitationsViews(APIView):
         """
         """
         invitation = GetAllInvitationsService.execute({})
-        invitations = paginator.paginate_queryset(invitation, request)
+        invitations = cls.paginator.paginate_queryset(invitation, request)
         serializer = GetAllInvitationSerializer(invitations, many=True)
-        return paginator.get_paginated_response(serializer.data)
-        # return Response(serializer.data, status=status.HTTP_200_OK)
+        return cls.paginator.get_paginated_response(serializer.data)
 
     @classmethod
     def post(cls, request):

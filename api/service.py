@@ -1,8 +1,20 @@
-from datetime import datetime
 from django.contrib.auth.models import User
+from django.core.mail import send_mail
+from nextmotion.settings import EMAIL_HOST_USER
 from service_objects.services import Service
 
 from .models import Invitation
+
+
+def send_varification_email(subject, message, email):
+    send_mail(
+        subject,
+        message,
+        EMAIL_HOST_USER,
+        [email],
+        html_message=message,
+        fail_silently=False,
+    )
 
 
 class GetAllInvitationsService(Service):
@@ -31,6 +43,14 @@ class CreateInvitationsService(Service):
         invitation = Invitation.objects.create(
             email=self.data.get("serial_data").get("email"), creator=creator
         )
+        try:
+            email = invitation.email
+            subject = "You got invitation for this email "
+            message = 'Invitation Email for this {0}'.format(email)
+            send_varification_email(subject, message, email)
+        except Exception:
+            # DOTO: I'm temp it's becouse if user not add EMAIL_HOST_USER and pwd.
+            pass
         return invitation
 
 
@@ -47,6 +67,14 @@ class UpdateInvitationsService(Service):
         email = self.data.get("email")
         if email:
             invitation.email = self.data.get("email")
+            try:
+                email = invitation.email
+                subject = "You change invitation"
+                message = 'Update Invitation Email for this email {0}'.format(email)
+                send_varification_email(subject, message, email)
+            except Exception:
+                # DOTO: I'm temp it's becouse if user not add EMAIL_HOST_USER and pwd.
+                pass
         used = self.data.get("used")
         if used:
             invitation.used = self.data.get("used")

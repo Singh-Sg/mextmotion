@@ -1,5 +1,4 @@
 import dateutil.parser
-from django.contrib.auth.models import User
 from rest_framework import serializers
 
 from .models import Invitation
@@ -7,12 +6,12 @@ from .models import Invitation
 
 class GetAllInvitationSerializer(serializers.ModelSerializer):
     """
-    'id': <str>, 
+    'id': <str>,
     'createdTime': <str iso 8601 format>,
     'seconds': <int> The time since the invitation has been created in seconds
     'email': <str>,
     'used': <bool>
-    'creatorEmail': <str>, 
+    'creatorEmail': <str>,
     'creatorFullname': <str> Example: John Oliver,
     """
 
@@ -61,7 +60,7 @@ class CreateInvitationSerializer(serializers.ModelSerializer):
 class UpdateInvitationSerializer(serializers.ModelSerializer):
     """
     """
-
+    # Note: It not required bcs in patch (Its not mention on docs)
     email = serializers.EmailField(required=False)
     used = serializers.NullBooleanField(required=False)
 
