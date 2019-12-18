@@ -1,3 +1,6 @@
+from django.core import paginator
+from rest_framework.settings import api_settings
+
 from nextmotion import settings
 from rest_framework import pagination, status
 from rest_framework.response import Response
@@ -20,14 +23,18 @@ from .service import (
 class InvitationsViews(APIView):
     """
     """
+    pagination_class = api_settings.DEFAULT_PAGINATION_CLASS
+    paginator = pagination_class()
 
     @classmethod
     def get(cls, request):
         """
         """
-        invitaions = GetAllInvitationsService.execute({})
-        serializer = GetAllInvitationSerializer(invitaions, many=True)
-        return Response(serializer.data, status=status.HTTP_200_OK)
+        invitation = GetAllInvitationsService.execute({})
+        invitations = paginator.paginate_queryset(invitation, request)
+        serializer = GetAllInvitationSerializer(invitations, many=True)
+        return paginator.get_paginated_response(serializer.data)
+        # return Response(serializer.data, status=status.HTTP_200_OK)
 
     @classmethod
     def post(cls, request):
