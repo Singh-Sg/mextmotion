@@ -1,7 +1,5 @@
 from django.contrib.auth.models import User
-from django.core import paginator
-from nextmotion import settings
-from rest_framework import pagination, status
+from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.settings import api_settings
 from rest_framework.views import APIView
@@ -56,11 +54,10 @@ class InvitationsViews(APIView):
     def patch(cls, request, invitations_id):
         """
         """
+        serializer = UpdateInvitationSerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        serial_data = serializer.validated_data
         try:
-            serializer = UpdateInvitationSerializer(data=request.data)
-
-            serializer.is_valid(raise_exception=True)
-            serial_data = serializer.validated_data
             invitaion = UpdateInvitationsService.execute(
                 {
                     "invitations_id": invitations_id,
@@ -84,7 +81,7 @@ class InvitationsViews(APIView):
         """
         try:
             DeleteInvitationsService.execute(
-                {"invitations_id": invitations_id,}
+                {"invitations_id": invitations_id}
             )
             return Response({}, status.HTTP_200_OK)
         except Invitation.DoesNotExist:
