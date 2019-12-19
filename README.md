@@ -20,13 +20,3 @@ The nextmotion Service is responsible for the backend tasks.
 * Run `$ pip install -r requirements.txt` command to Install project requirement file
 * Run `$ python manage.py migrate` command to apply migrations on your local machine
 * Run `$ python manage.py runserver` command to run project on your local machine
-
-    
-### Running the Tests
-* Run `$ cd nextmotion` command for jump into the project directory
-* Run `$ python manage.py test` command for run all test cases
-
-### Running Tests Coverage
-* Run `$ cd nextmotion` command for jump into the project directory
-* Run `$ coverage run --source='.' manage.py test` for run test cases with coverage
-* Run `$ coverage html`  to see the result
