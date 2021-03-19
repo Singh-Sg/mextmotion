@@ -1,7 +1,7 @@
 colorama==0.4.3
 Django==2.2.9
 django-service-objects==0.5.0
-djangorestframework==3.11.0
+djangorestframework==3.11.2
 entrypoints==0.3
 flake8==3.7.9
 flake8-polyfill==1.0.2
